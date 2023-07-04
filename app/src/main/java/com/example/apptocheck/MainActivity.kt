@@ -102,7 +102,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Text(text = "Field")
+        Text(text = "Fields")
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -119,7 +119,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 startActivity(context, intent, null)
             },
         ) {
-            Text(text = "send Intent")
+            Text(text = "send task Intent")
         }
 
         Spacer(modifier = Modifier.height(70.dp))
@@ -141,7 +141,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 startActivity(context, intent, null)
             },
         ) {
-            Text(text = "send Intent")
+            Text(text = "send field Intent")
         }
     }
 }
