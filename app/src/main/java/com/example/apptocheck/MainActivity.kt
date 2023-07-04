@@ -3,6 +3,7 @@ package com.example.apptocheck
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -13,26 +14,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,107 +57,136 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+val fieldIdList = listOf(
+    "99402005-fe6d-4210-bf5e-b741b878bdd7",
+    "993e7c09-0df8-4d2c-a4d8-0e71d21d8669",
+    "993e7c06-97f2-4429-9482-eb111bb0d343",
+    "993e7c04-aba8-421c-aac6-08baf4e92e52",
+    "993e7c09-0f87-4ca5-95ec-d6218fa504cb",
+    "993e7c08-394b-41e0-8bb0-74b271927dbd",
+    "998c6fd5-2c7e-420e-95eb-c1cb55c3c18f",
+    "993e7c08-d07d-4865-8442-da40c85b9938",
+    "998e6d3f-147f-4cfa-a4b6-f5eabc5e6ced",
+    "998e6d7d-a17f-4d4c-83b0-ecd28d5d1f1a",
+    "993e7c08-cf18-4a36-8caa-49011dde4d60",
+    "993e7c08-ff88-458f-b24e-ef70657c3667",
+    "993e7c08-d0f5-4bc1-84a4-7d648cdf3c32",
+)
+
+val taskIdList = listOf(
+    "993e7c10-2272-4bf9-bc7d-2f667c9824d6",
+    "99401717-15f0-4ec4-954d-ce1f998d203e",
+    "99402449-8a58-4932-b5cc-88e986071f8a",
+    "9941e70d-b3e9-490d-adca-67593cca142c",
+    "994239ae-7d4b-46c3-a58f-432e69e2f5f2",
+    "99426722-94ce-437a-97e3-3a5ccb3d9fe5",
+    "9947d8c7-c0a2-4860-97d5-24ac339c182c",
+    "995638a1-5655-41c9-ad1e-fb840420e826",
+)
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-//    val intent = remember {
-//        prepareIntent()
-//    }
     val context = LocalContext.current
 
-    Column() {
-        val type = rememberSaveable { mutableStateOf("task") }
-        val entry1 = remember { Pair("Task", "task") }
-        val entry2 = remember { Pair("Field", "field") }
-        val entry3 = remember { Pair("Farm", "farm") }
 
-        SampleSpinner(
-            listOf(entry1, entry2, entry3),
-            preselected = entry2,
-            onSelectionChanged = { selected ->
-                type.value = selected.second
-            }
-        )
+    var indexTask = 0
+    var indexField = 0
 
-        val text = rememberSaveable { mutableStateOf("998059a9-cc90-4127-b120-60072500118c") }
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
+        val entryTask = remember { Pair("Task", "task") }
+        val entryField = remember { Pair("Field", "field") }
+        val entryFarm = remember { Pair("Farm", "farm") }
 
-        TextField(
-            value = text.value,
-            onValueChange = { t: String ->
-                text.value = t
-            }
-        )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(text = "Field")
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        IdListSpinner(items = fieldIdList, onClick = { indexField = it })
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            modifier = Modifier.size(200.dp, 100.dp),
+            modifier = Modifier.size(200.dp, 50.dp),
             onClick = {
-                val intent = prepareIntent(type.value, text.value)
+                val intent = prepareIntent(entryField.second, fieldIdList[indexField])
+                Log.d("taskId", "taskId ${fieldIdList[indexField]}")
+                Log.d("taskId", "taskId ${intent}")
                 startActivity(context, intent, null)
             },
-        )
-        {
+        ) {
+            Text(text = "send Intent")
+        }
+
+        Spacer(modifier = Modifier.height(70.dp))
+
+        Text(text = "Tasks")
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        IdListSpinner(items = taskIdList, onClick = { indexTask = it })
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            modifier = Modifier.size(200.dp, 50.dp),
+            onClick = {
+                val intent = prepareIntent(entryTask.second, taskIdList[indexTask])
+                Log.d("taskId", "taskId ${taskIdList[indexTask]}")
+                Log.d("taskId", "taskId ${intent}")
+                startActivity(context, intent, null)
+            },
+        ) {
             Text(text = "send Intent")
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SampleSpinner(
-    list: List<Pair<String, String>>,
-    preselected: Pair<String, String>,
-    onSelectionChanged: (selection: Pair<String, String>) -> Unit
+private fun IdListSpinner(
+    items: List<String>,
+    onClick: (Int) -> Unit
 ) {
+    var expanded by remember { mutableStateOf(false) }
 
-    var selected by remember { mutableStateOf(preselected) }
-    var expanded by remember { mutableStateOf(false) } // initial value
+    var selectedIndex by remember { mutableStateOf(0) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.TopStart)
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .clickable(onClick = { expanded = true })
+                .background(Color.Gray.copy(0.5f)),
+            text = " $selectedIndex  ${items[selectedIndex]}"
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent)
+        ) {
+            items.forEachIndexed { index, s ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedIndex = index
+                        onClick(index)
+                        expanded = false
+                    },
+                    text = { Text("$index  $s") },
+                )
 
-    Box {
-        Column {
-            OutlinedTextField(
-                value = (selected.second),
-                onValueChange = { },
-                label = { Text(text = "My List") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
-                readOnly = true
-            )
-            DropdownMenu(
-                modifier = Modifier.fillMaxWidth(),
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                list.forEach { entry ->
-
-                    DropdownMenuItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            selected = entry
-                            expanded = false
-                        },
-                        text = {
-                            Text(
-                                text = (entry.second),
-                                modifier = Modifier
-                                    .wrapContentWidth()
-                                    .align(Alignment.Start))
-                        }
-                    )
-                }
+                Divider()
             }
         }
-
-        Spacer(
-            modifier = Modifier
-                .matchParentSize()
-                .background(Color.Transparent)
-                .padding(10.dp)
-                .clickable(
-                    onClick = { expanded = !expanded }
-                )
-        )
     }
 }
 
