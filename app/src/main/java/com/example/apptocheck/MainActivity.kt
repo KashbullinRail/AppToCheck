@@ -7,13 +7,16 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -32,7 +35,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -93,7 +98,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     var indexField = 0
 
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(10.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val entryTask = remember { Pair("Task", "task") }
         val entryField = remember { Pair("Field", "field") }
@@ -111,13 +120,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            modifier = Modifier.size(200.dp, 50.dp),
+            modifier = Modifier.size(200.dp, 45.dp),
             onClick = {
                 val intent = prepareIntent(entryField.second, fieldIdList[indexField])
                 Log.d("taskId", "taskId ${fieldIdList[indexField]}")
                 Log.d("taskId", "taskId ${intent}")
                 startActivity(context, intent, null)
             },
+            shape = MaterialTheme.shapes.small
         ) {
             Text(text = "send task Intent")
         }
@@ -133,13 +143,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            modifier = Modifier.size(200.dp, 50.dp),
+            modifier = Modifier.size(200.dp, 45.dp),
             onClick = {
                 val intent = prepareIntent(entryTask.second, taskIdList[indexTask])
                 Log.d("taskId", "taskId ${taskIdList[indexTask]}")
                 Log.d("taskId", "taskId ${intent}")
                 startActivity(context, intent, null)
             },
+            shape = MaterialTheme.shapes.small
         ) {
             Text(text = "send field Intent")
         }
@@ -157,14 +168,15 @@ private fun IdListSpinner(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.TopStart)
+            .clip(shape = MaterialTheme.shapes.small),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
                 .clickable(onClick = { expanded = true })
-                .background(Color.Gray.copy(0.5f)),
+                .background(Color.Gray.copy(0.5f))
+                .padding(10.dp),
             text = " $selectedIndex  ${items[selectedIndex]}"
         )
         DropdownMenu(
