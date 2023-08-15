@@ -85,6 +85,25 @@ val taskIdList = listOf(
     "995638a1-5655-41c9-ad1e-fb840420e826",
 )
 
+val taskIdList2 = listOf(
+    "994be970-d7fb-48c0-9e08-d311eb1b8a06",
+    "994be970-ccbd-47da-8f66-e41f6342a2a4",
+    "994be970-da91-4a0c-b7f4-fdd511f0f330",
+    "994be970-aeb9-412d-8d3c-c3a8dfb14c99",
+    "994be970-bba3-4706-8fa4-012fab4be855",
+    "994be970-b673-4df5-beb8-9500e6cdf302",
+)
+
+
+val fieldIdList2 = listOf(
+    "994be961-b09b-4533-bc33-03e245f6c434",
+    "994be961-b032-4876-95da-3ecea84a3705",
+    "994be961-ada7-4fbd-8bba-d79657d2ca08",
+    "994be961-dfe9-4f95-996a-b749a0149817",
+    "994be961-a685-4428-8109-d6cc7d621cf1",
+    "994be963-50b0-4c12-9df8-d76d4152d749",
+)
+
 @Composable
 fun IntentTestScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -107,18 +126,43 @@ fun IntentTestScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Text(text = "Fields")
+        Text(text = "Fields для теста")
 
         Spacer(modifier = Modifier.height(10.dp))
+
         IdListSpinner(items = fieldIdList, onClick = { indexField = it })
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             modifier = Modifier.size(200.dp, 45.dp),
             onClick = {
                 val intent = prepareIntent(entryField.second, fieldIdList[indexField])
-                Log.d("taskId", "taskId ${fieldIdList[indexField]}")
-                Log.d("taskId", "taskId ${intent}")
+//                Log.d("taskId", "taskId ${fieldIdList[indexField]}")
+//                Log.d("taskId", "taskId ${intent}")
+                startActivity(context, intent, null)
+            },
+            shape = MaterialTheme.shapes.small
+        ) {
+            Text(text = "send field Intent")
+        }
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Text(text = "Tasks для теста")
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        IdListSpinner(items = taskIdList, onClick = { indexTask = it })
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            modifier = Modifier.size(200.dp, 45.dp),
+            onClick = {
+                val intent = prepareIntent(entryTask.second, taskIdList[indexTask])
+//                Log.d("taskId", "taskId ${taskIdList[indexTask]}")
+//                Log.d("taskId", "taskId ${intent}")
                 startActivity(context, intent, null)
             },
             shape = MaterialTheme.shapes.small
@@ -126,25 +170,51 @@ fun IntentTestScreen(modifier: Modifier = Modifier) {
             Text(text = "send task Intent")
         }
 
-        Spacer(modifier = Modifier.height(70.dp))
 
-        Text(text = "Tasks")
+        Spacer(modifier = Modifier.height(120.dp))
+
+        Text(text = "Fields для продакшена")
 
         Spacer(modifier = Modifier.height(10.dp))
-        IdListSpinner(items = taskIdList, onClick = { indexTask = it })
+
+        IdListSpinner(items = fieldIdList2, onClick = { indexField = it })
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             modifier = Modifier.size(200.dp, 45.dp),
             onClick = {
-                val intent = prepareIntent(entryTask.second, taskIdList[indexTask])
-                Log.d("taskId", "taskId ${taskIdList[indexTask]}")
-                Log.d("taskId", "taskId ${intent}")
+                val intent = prepareIntent(entryField.second, fieldIdList2[indexField])
+//                Log.d("taskId", "taskId ${fieldIdList[indexField]}")
+//                Log.d("taskId", "taskId ${intent}")
                 startActivity(context, intent, null)
             },
             shape = MaterialTheme.shapes.small
         ) {
             Text(text = "send field Intent")
+        }
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Text(text = "Tasks для продакшена")
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        IdListSpinner(items = taskIdList2, onClick = { indexTask = it })
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            modifier = Modifier.size(200.dp, 45.dp),
+            onClick = {
+                val intent = prepareIntent(entryTask.second, taskIdList2[indexTask])
+//                Log.d("taskId", "taskId ${taskIdList[indexTask]}")
+//                Log.d("taskId", "taskId ${intent}")
+                startActivity(context, intent, null)
+            },
+            shape = MaterialTheme.shapes.small
+        ) {
+            Text(text = "send task Intent")
         }
     }
 }
